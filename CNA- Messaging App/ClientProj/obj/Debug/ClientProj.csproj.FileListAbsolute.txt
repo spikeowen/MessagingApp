@@ -1,0 +1,15 @@
+F:\CNA- Messaging App\ClientProj\bin\Debug\ClientProj.exe.config
+F:\CNA- Messaging App\ClientProj\bin\Debug\ClientProj.exe
+F:\CNA- Messaging App\ClientProj\bin\Debug\ClientProj.pdb
+F:\CNA- Messaging App\ClientProj\obj\Debug\ClientProj.csproj.CoreCompileInputs.cache
+F:\CNA- Messaging App\ClientProj\obj\Debug\ClientProj.exe
+F:\CNA- Messaging App\ClientProj\obj\Debug\ClientProj.pdb
+F:\CNA- Messaging App\ClientProj\obj\Debug\MainWindow.g.cs
+F:\CNA- Messaging App\ClientProj\obj\Debug\ClientProj_MarkupCompile.cache
+F:\CNA- Messaging App\ClientProj\obj\Debug\ClientProj_MarkupCompile.lref
+F:\CNA- Messaging App\ClientProj\obj\Debug\MainWindow.baml
+F:\CNA- Messaging App\ClientProj\obj\Debug\ClientProj.g.resources
+F:\CNA- Messaging App\ClientProj\bin\Debug\Packets.dll
+F:\CNA- Messaging App\ClientProj\bin\Debug\Packets.pdb
+F:\CNA- Messaging App\ClientProj\obj\Debug\ClientProj.csproj.CopyComplete
+F:\CNA- Messaging App\ClientProj\obj\Debug\ClientProj.csprojAssemblyReference.cache

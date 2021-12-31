@@ -1,0 +1,6 @@
+F:\CNA- Messaging App\Packets\bin\Debug\Packets.dll
+F:\CNA- Messaging App\Packets\bin\Debug\Packets.pdb
+F:\CNA- Messaging App\Packets\obj\Debug\Packets.csproj.CoreCompileInputs.cache
+F:\CNA- Messaging App\Packets\obj\Debug\Packets.dll
+F:\CNA- Messaging App\Packets\obj\Debug\Packets.pdb
+F:\CNA- Messaging App\Packets\obj\Debug\Packets.csprojAssemblyReference.cache
