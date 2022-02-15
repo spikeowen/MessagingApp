@@ -8,9 +8,9 @@ namespace ClientProj
         static void Main()
         {
             Client client = new Client();
-            if (client.Connect("127.0.0.1", 4444))
+            if (client.TCPConnect("127.0.0.1", 4444))
             {
-                client.Run();
+                client.TCPRun();
             }
             else
             {

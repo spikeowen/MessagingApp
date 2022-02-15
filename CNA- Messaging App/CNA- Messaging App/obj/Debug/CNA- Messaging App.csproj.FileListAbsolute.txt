@@ -7,4 +7,4 @@ F:\CNA- Messaging App\CNA- Messaging App\obj\Debug\CNA- Messaging App.pdb
 F:\CNA- Messaging App\CNA- Messaging App\bin\Debug\Packets.dll
 F:\CNA- Messaging App\CNA- Messaging App\bin\Debug\Packets.pdb
 F:\CNA- Messaging App\CNA- Messaging App\obj\Debug\CNA- Messaging App.csproj.CopyComplete
-F:\CNA- Messaging App\CNA- Messaging App\obj\Debug\CNA- Messaging App.csprojAssemblyReference.cache
+F:\CNA- Messaging App\CNA- Messaging App\obj\Debug\CNA- Messaging App.csproj.AssemblyReference.cache

@@ -12,4 +12,4 @@ F:\CNA- Messaging App\ClientProj\obj\Debug\ClientProj.g.resources
 F:\CNA- Messaging App\ClientProj\bin\Debug\Packets.dll
 F:\CNA- Messaging App\ClientProj\bin\Debug\Packets.pdb
 F:\CNA- Messaging App\ClientProj\obj\Debug\ClientProj.csproj.CopyComplete
-F:\CNA- Messaging App\ClientProj\obj\Debug\ClientProj.csprojAssemblyReference.cache
+F:\CNA- Messaging App\ClientProj\obj\Debug\ClientProj.csproj.AssemblyReference.cache

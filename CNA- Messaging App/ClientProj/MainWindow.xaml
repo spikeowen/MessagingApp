@@ -21,5 +21,6 @@
         <Label Content="Message:" HorizontalAlignment="Left" Height="32" Margin="27,385,0,0" VerticalAlignment="Top" Width="80" Foreground="DarkBlue" FontSize="14"/>
         <TextBox x:Name="messageText" HorizontalAlignment="Left" Height="32" Margin="107,385,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="526" BorderBrush="LightSteelBlue" Foreground="Red" FontSize="14"/>
         <TextBox x:Name="chatBox" HorizontalAlignment="Left" Height="277" Margin="27,88,0,0" VerticalAlignment="Top" Width="606" BorderBrush="LightSteelBlue" Foreground="Red"/>
+        <Button x:Name="helpButton" Content="Help" HorizontalAlignment="Left" Height="25" Margin="672,34,0,0" VerticalAlignment="Top" Width="102" Click="helpButton_Click"/>
     </Grid>
 </Window>

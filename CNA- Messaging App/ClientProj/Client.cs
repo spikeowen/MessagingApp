@@ -17,27 +17,36 @@ namespace ClientProj
     public class Client
     {
         TcpClient m_TcpClient;
-        NetworkStream m_Stream;
-        BinaryWriter m_Writer;
-        BinaryReader m_Reader;
-        BinaryFormatter formatter;
+        NetworkStream m_TCPStream;
+        BinaryWriter m_TCPWriter;
+        BinaryReader m_TCPReader;
+        BinaryFormatter m_TCPFormatter;
         private CNA__Tut5.MainWindow ClientForm;
+        private UdpClient m_UdpClient;
+        NetworkStream m_UDPStream;
+        BinaryWriter m_UDPWriter;
+        BinaryReader m_UDPReader;
+        BinaryFormatter m_UDPFormatter;
 
-    
         public Client()
         {
             m_TcpClient = new TcpClient();
         }
 
-        public bool Connect(string ip, int port)
+        public bool TCPConnect(string ip, int port)
         {
             try
             {
                 m_TcpClient.Connect(ip, port);
-                m_Stream = m_TcpClient.GetStream();
-                m_Writer = new BinaryWriter(m_Stream, Encoding.UTF8);
-                m_Reader = new BinaryReader(m_Stream, Encoding.UTF8);
-                formatter = new BinaryFormatter();
+                m_TCPStream = m_TcpClient.GetStream();
+                m_TCPWriter = new BinaryWriter(m_TCPStream, Encoding.UTF8);
+                m_TCPReader = new BinaryReader(m_TCPStream, Encoding.UTF8);
+                m_TCPFormatter = new BinaryFormatter();
+                m_UdpClient = new UdpClient();
+                m_UdpClient.Connect(ip, port);
+                m_UDPWriter = new BinaryWriter(m_TCPStream, Encoding.UTF8);
+                m_UDPReader = new BinaryReader(m_TCPStream, Encoding.UTF8);
+                m_UDPFormatter = new BinaryFormatter();
                 return true;
             }
             catch (Exception e)
@@ -47,13 +56,17 @@ namespace ClientProj
             }
         }
 
-        public void Run()
+        public void TCPRun()
         {
             ClientForm = new CNA__Tut5.MainWindow(this);
 
-            Thread thread1 = new Thread(new ThreadStart(this.ProcessServerResponse));
+            Thread thread1 = new Thread(new ThreadStart(this.TCPProcessServerResponse));
             thread1.Start();
             ClientForm.ShowDialog();
+
+            Thread thread2 = new Thread(new ThreadStart(this.UdpProcessServerResponse));
+            thread2.Start();
+            Login();
 
             //string userInput;
 
@@ -73,9 +86,10 @@ namespace ClientProj
             //}
 
             m_TcpClient.Close();
+            m_UdpClient.Close();
         }
 
-        private void ProcessServerResponse()
+        private void TCPProcessServerResponse()
         {
             try
             {
@@ -88,11 +102,11 @@ namespace ClientProj
 
                     int numberOfBytes;
 
-                    if ((numberOfBytes = m_Reader.ReadInt32()) != -1)
+                    if ((numberOfBytes = m_TCPReader.ReadInt32()) != -1)
                     {
-                        byte[] buffer = m_Reader.ReadBytes(numberOfBytes);
+                        byte[] buffer = m_TCPReader.ReadBytes(numberOfBytes);
                         MemoryStream memStream = new MemoryStream(buffer);
-                        Packet packet = formatter.Deserialize(memStream) as Packet;
+                        Packet packet = m_TCPFormatter.Deserialize(memStream) as Packet;
 
                         switch (packet.packetType)
                         {
@@ -102,7 +116,10 @@ namespace ClientProj
                                 break;
                             case PacketType.Client_Name:
                                 NamePacket namePacket = (NamePacket)packet;
-                                ClientForm.UpdateNameChatBox(namePacket._message);
+                                ClientForm.UpdateUserList(namePacket._message);
+                                break;
+                            case PacketType.Terminate:
+                                //ClientForm.Close();
                                 break;
                         }
                      
@@ -111,11 +128,11 @@ namespace ClientProj
             }
             catch (Exception e)
             {
-                Console.WriteLine("Exception: " + e.Message);
+                Console.WriteLine("TCP Read Exception: " + e.Message);
             }
         }
 
-        public void SendMessage(Packet message)
+        public void TCPSendMessage(Packet message)
         {
             ////m_Writer.WriteLine(name + " says: " + message);
             //m_Writer.WriteLine(message);
@@ -123,15 +140,72 @@ namespace ClientProj
             try
             {
                 MemoryStream memStream = new MemoryStream();
-                formatter.Serialize(memStream, message);
+                m_TCPFormatter.Serialize(memStream, message);
                 byte[] buffer = memStream.GetBuffer();
-                m_Writer.Write(buffer.Length);
-                m_Writer.Write(buffer);
-                m_Writer.Flush();
+                m_TCPWriter.Write(buffer.Length);
+                m_TCPWriter.Write(buffer);
+                m_TCPWriter.Flush();
+
             }
             catch (Exception e)
             {
-                Console.WriteLine("Exception: " + e.Message);
+                Console.WriteLine("TCP Write Exception: " + e.Message);
+            }
+        }
+
+        public void Login()
+        {
+            TCPSendMessage(new LoginPacket((IPEndPoint)m_UdpClient.Client.LocalEndPoint));
+        }
+
+        public void UdpSendMessage(Packet packet)
+        {
+            try
+            {
+                MemoryStream UDPMemStream = new MemoryStream();
+                m_UDPFormatter.Serialize(UDPMemStream, packet);
+                byte[] buffer = UDPMemStream.GetBuffer();
+                m_UDPWriter.Write(buffer.Length);
+                m_UDPWriter.Write(buffer);
+                m_UDPWriter.Flush();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("UDP Write Exception: " + e.Message);
+            }
+        }
+
+        private void UdpProcessServerResponse()
+        {
+            try
+            {
+                IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, 0);
+                while(true)
+                {
+                    byte[] buffer = m_UdpClient.Receive(ref endPoint);
+                    MemoryStream UDPMemStream = new MemoryStream(buffer);
+                    Packet packet = m_UDPFormatter.Deserialize(UDPMemStream) as Packet;
+
+                    switch (packet.packetType)
+                    {
+                        case PacketType.Chat_Message:
+                            ChatMessagePacket chatPacket = (ChatMessagePacket)packet;
+                            ClientForm.UpdateChatBox(chatPacket._message);
+                            break;
+                        case PacketType.Client_Name:
+                            NamePacket namePacket = (NamePacket)packet;
+                            ClientForm.UpdateUserList(namePacket._message);
+                            break;
+                        case PacketType.Login:
+                            ChatMessagePacket loginPacket = (ChatMessagePacket)packet;
+                            ClientForm.UpdateChatBox(loginPacket._message);
+                            break;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("UDP Read Exception: " + e.Message);
             }
         }
     }

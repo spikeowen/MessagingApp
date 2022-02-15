@@ -26,6 +26,7 @@ namespace CNA__Tut5
         {
             InitializeComponent();
             m_client = client;
+            chatBox.IsReadOnly = true;
         }
 
         private void sendMessageButton_Click(object sender, RoutedEventArgs e)
@@ -49,8 +50,8 @@ namespace CNA__Tut5
                     //Packet message = messageText.Text;
                     //chatBox.Text += name + " says: " + message + "\n";
                     //m_client.SendMessage(localName.Text, messageText.Text);
-                    m_client.SendMessage(name);
-                    m_client.SendMessage(message);
+                    m_client.TCPSendMessage(name);
+                    m_client.TCPSendMessage(message);
                     localName.IsReadOnly = true;
                 }
             }
@@ -80,6 +81,13 @@ namespace CNA__Tut5
                 userList.Items.Add(message);
             });
         }
+
+        private void helpButton_Click(object sender, RoutedEventArgs e)
+        {
+            HelpPacket help = new HelpPacket();
+            m_client.TCPSendMessage(help);
+        }
+
 
     }
 }

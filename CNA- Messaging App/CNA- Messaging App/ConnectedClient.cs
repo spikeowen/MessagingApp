@@ -20,6 +20,7 @@ namespace ServerProj
         private BinaryFormatter formatter;
         private object m_ReadLock;
         private object m_WriteLock;
+        public IPEndPoint endPoint;
 
         public ConnectedClient(Socket socket)
         {

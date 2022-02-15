@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net;
+using System.Net.Sockets;
 
 namespace Packets
 {
@@ -10,7 +12,10 @@ namespace Packets
     {
         Chat_Message,
         Private_Message,
-        Client_Name
+        Client_Name,
+        Login,
+        Help,
+        Terminate
     }
 
     [Serializable]
@@ -40,6 +45,43 @@ namespace Packets
         {
             _message = message;
             packetType = PacketType.Client_Name;
+
+        }
+    }
+
+    [Serializable]
+    public class LoginPacket : Packet
+    {
+        public IPEndPoint _endPoint;
+
+        public LoginPacket(IPEndPoint endPoint)
+        {
+            _endPoint = endPoint;
+            packetType = PacketType.Login;
+
+        }
+    }
+
+    [Serializable]
+    public class HelpPacket : Packet
+    {
+        public string _message;
+
+        public HelpPacket()
+        {
+            packetType = PacketType.Help;
+
+        }
+    }
+
+    [Serializable]
+    public class TerminatePacket : Packet
+    {
+        public string _message;
+
+        public TerminatePacket()
+        {
+            packetType = PacketType.Terminate;
 
         }
     }

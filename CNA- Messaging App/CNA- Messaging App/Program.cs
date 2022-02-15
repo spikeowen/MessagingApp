@@ -9,7 +9,7 @@ namespace ServerProj
         static void Main()
         {
             ServerClass server = new ServerClass("127.0.0.1", 4444);
-            server.Start();
+            server.TCPStart();
             server.Stop();
         }
     }
